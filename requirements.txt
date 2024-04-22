@@ -1,0 +1,6 @@
+sqlalchemy
+telebot
+geopy
+requests
+pandas
+openpyxl
