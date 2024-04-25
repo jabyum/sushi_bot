@@ -54,9 +54,8 @@ def location_kb_uz():
 def categories_ru(cats):
     kb = InlineKeyboardMarkup(row_width=2)
     back = InlineKeyboardButton(text="🔙Назад", callback_data="main_menu")
-    all_menu = InlineKeyboardButton(text="Всё меню", url="https://telegra.ph/Menyu-12-07-22")
     all_cats = [InlineKeyboardButton(text=i[1], callback_data=i[1]) for i in cats]
-    kb.add(all_menu, *all_cats, back)
+    kb.add( *all_cats, back)
     return kb
 def products_ru(cats):
     kb = InlineKeyboardMarkup(row_width=2)
@@ -67,7 +66,7 @@ def products_ru(cats):
 def exact_product_ru(current_ammount=1, plus_or_minus=""):
     kb = InlineKeyboardMarkup(row_width=3)
     back = InlineKeyboardButton(text="⬅️ Назад", callback_data="main_menu")
-    accept =  InlineKeyboardButton(text="Добавить в корзигу", callback_data="to_cart")
+    accept =  InlineKeyboardButton(text="Добавить в корзину", callback_data="to_cart")
     minus = InlineKeyboardButton(text="➖", callback_data="minus")
     plus = InlineKeyboardButton(text="➕", callback_data="plus")
     count = InlineKeyboardButton(text=f"{current_ammount}", callback_data="none")
@@ -94,9 +93,9 @@ def get_cart_kb_ru(cart):
 def categories_uz(cats):
     kb = InlineKeyboardMarkup(row_width=2)
     back = InlineKeyboardButton(text="🔙Орқага", callback_data="main_menu_uz")
-    all_menu = InlineKeyboardButton(text="Барча меню", url="https://telegra.ph/Menyu-12-07-22")
+
     all_cats = [InlineKeyboardButton(text=i[1], callback_data=i[2]) for i in cats]
-    kb.add(all_menu, *all_cats, back)
+    kb.add(*all_cats, back)
     return kb
 
 def products_uz(cats):

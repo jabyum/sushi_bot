@@ -12,17 +12,17 @@ bot = TeleBot("7030688867:AAHTp74pQhErZWElrRKFmcucOOgsC4tx1hg")
 Base.metadata.create_all(bind=engine)
 carts = {}
 admins_group = -4111231307
-# us.register_admin(305896408, "Programmer")
-# pr.register_category("🍱Сеты", "🍱Setlar")
-# pr.register_category("🍣Суши", "🍣Sushi")
-# pr.register_category("🍤Роллы", "🍤Rollar")
-# pr.register_category("🥬Салаты", "🥬Salatlar")
-# pr.register_category("🥡ВОК", "🥡WOK")
-# pr.register_category("🍜Супы", "🍜Шорбалар")
-# pr.register_category("🥟Горячие закуски", "🥟 Иситиқ истифода")
-# pr.register_category("🍞Хлеб", "🍞Нон")
-# pr.register_category("🍰Десерты", "🍰Десертлар")
-# pr.register_category("🍹Напитки", "🍹Ичимликлар")
+us.register_admin(305896408, "Programmer")
+pr.register_category("🍱Сеты", "🍱Setlar")
+pr.register_category("🍣Суши", "🍣Sushi")
+pr.register_category("🍤Роллы", "🍤Rollar")
+pr.register_category("🥬Салаты", "🥬Salatlar")
+pr.register_category("🥡ВОК", "🥡WOK")
+pr.register_category("🍜Супы", "🍜Шорбалар")
+pr.register_category("🥟Горячие закуски", "🥟 Иситиқ истифода")
+pr.register_category("🍞Хлеб", "🍞Нон")
+pr.register_category("🍰Десерты", "🍰Десертлар")
+pr.register_category("🍹Напитки", "🍹Ичимликлар")
 @bot.message_handler(commands=["start", "admin"])
 def start(message):
     user_id = message.from_user.id
@@ -771,6 +771,7 @@ def send_screenshot(message):
                 photo = message.photo[-1].file_id
                 bot.send_photo(chat_id=admins_group, photo=photo, caption=f"Подтвреждение оплаты от юзера <code> {user_id} </code>",
                                parse_mode="HTML", reply_markup=bt.admin_accept_kb_ru())
+                bot.send_message(user_id, "Подтверждение отправлено. Ожидайте ответ")
             except:
                 bot.send_message(user_id, "Не удалось подтвердить оплату, попробуйте заново", reply_markup=ReplyKeyboardRemove())
     else:
@@ -785,6 +786,7 @@ def send_screenshot_uz(message):
                 photo = message.photo[-1].file_id
                 bot.send_photo(chat_id=admins_group, photo=photo, caption=f"Фойдаланувчидан тасдиқлов расми <code> {user_id} </code>",
                                parse_mode="HTML", reply_markup=bt.admin_accept_kb_uz())
+                bot.send_message(user_id, "Тасдиқлов юборилди. Жавоб кутишингизни сўраймиз")
             except:
                 bot.send_message(user_id, "Тўловни тасдиқлаш мумкин бўлмади, янгидан урунг", reply_markup=ReplyKeyboardRemove())
     else:
@@ -860,4 +862,4 @@ def admins_answer_uz(message, type, m_id=None):
 
 
 
-bot.polling(non_stop=True)
+bot.infinity_polling()

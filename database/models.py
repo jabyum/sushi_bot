@@ -21,7 +21,7 @@ class Product(Base):
     product_id = Column(Integer, primary_key=True, autoincrement=True)
     product_name = Column(String, unique=True)
     product_name_uz = Column(String, unique=True)
-    product_price = Column(Float)
+    product_price = Column(Integer)
     product_description = Column(String, nullable=True)
     product_description_uz = Column(String, nullable=True)
     product_photo = Column(Integer, nullable=True)
