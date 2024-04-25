@@ -32,7 +32,7 @@ class Cart(Base):
     __tablename__ = "cart"
     cart_id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey("user.user_id"))
-    product_name = Column(String, unique=True)
+    product_name = Column(String)
     product_count = Column(Integer)
     total_price = Column(Integer)
     reg_date = Column(DateTime)

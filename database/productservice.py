@@ -201,7 +201,7 @@ def user_cart_ids(user_id):
     db = next(get_db())
     exact_carts = db.query(Cart).filter_by(user_id=user_id).all()
     try:
-        actual_ids = [exact.cart_id for exact in exact_carts]
+        actual_ids = [str(exact.cart_id) for exact in exact_carts]
         return actual_ids
     except:
         pass
