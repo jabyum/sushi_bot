@@ -552,10 +552,10 @@ def get_location_uz(message):
                                   f"картага <code> 8600 4929 9818 5108 </code> улар ва тасдиқлов учун тасдиқланган расмини юборинг",
                          reply_markup=bt.send_prove_kb(), parse_mode="HTML")
         pr.delete_user_cart(user_id)
-        bot.send_message(user_id, "Ҳаракатни танланг", reply_markup=bt.main_menu_ru())
+        bot.send_message(user_id, "Ҳаракатни танланг", reply_markup=bt.main_menu_uz())
     elif message.text == "❌Бекор қилиш":
         bot.send_message(user_id, "Сиз буюртмани бекор қилдингиз", reply_markup=ReplyKeyboardRemove())
-        bot.send_message(user_id, "Ҳаракатни танланг", reply_markup=bt.main_menu_ru())
+        bot.send_message(user_id, "Ҳаракатни танланг", reply_markup=bt.main_menu_uz())
     else:
         bot.send_message(user_id, "Локацияни юборинг")
         bot.register_next_step_handler(message, get_location_uz)
@@ -812,7 +812,7 @@ def admins_get_text_uz(message):
             return bot.send_message(user_id, "Ҳаракат бекор қилинди", reply_markup=ReplyKeyboardRemove())
         else:
             to_id = int(message.text)
-            bot.send_message(admins_group, "Хабар матнини киритинг", reply_markup=bt.cancel_kb())
+            bot.send_message(admins_group, "Хабар матнини киритинг", reply_markup=bt.cancel_kb_uz())
             bot.register_next_step_handler(message, admins_answer_uz, type, to_id)
     except:
         bot.send_message(admins_group, "Хатолик", reply_markup=ReplyKeyboardRemove())
