@@ -14,27 +14,29 @@ class Category(Base):
     __tablename__ = "category"
     cat_id = Column(Integer, primary_key=True, autoincrement=True)
     cat_name = Column(String, unique=True)
+    cat_name_uz = Column(String, unique=True)
     reg_date = Column(DateTime)
 class Product(Base):
     __tablename__ = "product"
     product_id = Column(Integer, primary_key=True, autoincrement=True)
     product_name = Column(String, unique=True)
+    product_name_uz = Column(String, unique=True)
     product_price = Column(Float)
     product_description = Column(String, nullable=True)
-    product_photo = Column(String, nullable=True)
-    product_cat = Column(String,ForeignKey("category.cat_name", ondelete="SET NULL"))
+    product_description_uz = Column(String, nullable=True)
+    product_photo = Column(Integer, nullable=True)
+    product_cat = Column(String)
     reg_date = Column(DateTime)
-    cat_fk = relationship(Category, lazy="subquery", backref='category')
+
 class Cart(Base):
     __tablename__ = "cart"
     cart_id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey("user.user_id"))
-    product_name = Column(String, ForeignKey("product.product_name"), unique=True)
+    product_name = Column(String, unique=True)
     product_count = Column(Integer)
     total_price = Column(Integer)
     reg_date = Column(DateTime)
     user_fk = relationship(User, lazy="subquery")
-    product_fk = relationship(Product, lazy="subquery")
 
 class Admin(Base):
     __tablename__ = "admin"

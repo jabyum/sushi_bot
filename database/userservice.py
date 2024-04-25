@@ -2,10 +2,10 @@ from database.models import User, Admin
 from database import get_db
 from datetime import datetime
 
-def register_user(user_id, user_name, phone_number):
+def register_user(user_id, user_name, phone_number, language):
     db = next(get_db())
     new_user = User(tg_id=user_id, user_name=user_name,
-                        phone_number=phone_number, reg_date=datetime.now())
+                        phone_number=phone_number, language=language, reg_date=datetime.now())
     db.add(new_user)
     db.commit()
 
@@ -15,11 +15,18 @@ def check_user_db(user_id):
     if checker:
         return True
     return False
+def check_language_db(user_id):
+    db = next(get_db())
+    checker = db.query(User).filter_by(tg_id=user_id).first()
+    return checker.language
 def change_language(user_id, new_language):
     db = next(get_db())
-    user = db.query(User).filter_by(user_id=user_id).first()
-    user.language = new_language
-    db.commit()
+    try:
+        user = db.query(User).filter_by(tg_id=user_id).first()
+        user.language = new_language
+        db.commit()
+    except:
+        pass
 def change_user_info(user_id, column, new_info):
     db = next(get_db())
     all_info = db.query(User).filter_by(user_id=user_id).first()
@@ -48,3 +55,8 @@ def check_admin(user_id):
     if checker:
         return True
     return False
+def delete_admin_db(admin_id):
+    db = next(get_db())
+    checker = db.query(Admin).filter_by(admin_tg_id=admin_id).first()
+    db.delete(checker)
+    db.commit()
