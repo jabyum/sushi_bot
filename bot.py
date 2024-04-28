@@ -16,20 +16,21 @@ us.register_admin(305896408, "Programmer")
 pr.register_category("🍱Сеты", "🍱Setlar")
 pr.register_category("🍣Суши", "🍣Sushi")
 pr.register_category("🍤Роллы", "🍤Rollar")
-pr.register_category("🥬Салаты", "🥬Salatlar")
+pr.register_category("🥬Салаты", "🥬Салатлар")
 pr.register_category("🥡ВОК", "🥡WOK")
 pr.register_category("🍜Супы", "🍜Шорбалар")
 pr.register_category("🥟Горячие закуски", "🥟 Иситиқ истифода")
 pr.register_category("🍞Хлеб", "🍞Нон")
 pr.register_category("🍰Десерты", "🍰Десертлар")
 pr.register_category("🍹Напитки", "🍹Ичимликлар")
+pr.register_category("🍹Напитки", "🍹Ичимликлар")
+pr.register_category("❇️Дополнительно", "❇️Қўшимча")
 @bot.message_handler(commands=["start", "admin"])
 def start(message):
     user_id = message.from_user.id
     check_admin = us.check_admin(user_id)
     # check_admin = True
     checker = us.check_user_db(user_id=user_id)
-
     if message.text == "/start":
         if checker == True:
             language = us.check_language_db(user_id)
@@ -151,7 +152,7 @@ def for_call(call):
         bot.send_message(user_id, "Выберите действие", reply_markup=bt.main_menu_ru())
     elif call.data == "order":
         bot.delete_message(user_id, call.message.id)
-        bot.send_message(user_id, "Хотите заказать что-то еще?", reply_markup=bt.accept_kb())
+        bot.send_message(user_id, "Хотите заказать дополнительный имбирь или васаби?", reply_markup=bt.accept_kb())
     elif call.data == "no":
         bot.delete_message(chat_id=user_id, message_id=call.message.message_id)
         try:
@@ -365,7 +366,7 @@ def for_call_uz(call):
         bot.send_message(user_id, "Тўлов расмини/скриншотини юборинг", reply_markup=bt.cancel_kb_uz())
         bot.register_next_step_handler(call.message, send_screenshot_uz)
     elif call.data == "accept_order_uz":
-        bot.send_message(user_id, "Тасдиқланган буюртма учун фойдаланувчи идентификаторини киритинг", reply_markup=bt.cancel_kb_uz())
+        bot.send_message(user_id, "Қўшимча имбир ёки восаби истайсизми?", reply_markup=bt.cancel_kb_uz())
         bot.register_next_step_handler(call.message, admins_answer_uz, "accept")
     elif call.data == "cancel_order_uz":
         bot.send_message(user_id, "Буюртмани рад этган фойдаланувчи идентификаторини киритинг", reply_markup=bt.cancel_kb_uz())
@@ -510,7 +511,7 @@ def get_location(message):
         user_cart = pr.get_user_cart(user_id)
         user_info = us.get_user_info(user_id)
         full_text = (f"Новый заказ от юзера <code>{user_id}</code>: \n"
-                     f"Номер: {user_info[0]}\n"
+                     f"Номер: +{user_info[0]}\n"
                      f"Язык: {user_info[1]}\n"
                      f"Адрес: {location}\n\n")
         total_amount = 0
@@ -539,7 +540,7 @@ def get_location_uz(message):
         user_cart = pr.get_user_cart(user_id)
         user_info = us.get_user_info(user_id)
         full_text = (f"Фойдаланувчи <code>{user_id}</code>дан янги буюртма:\n"
-                     f"Телефон: {user_info[0]}\n"
+                     f"Телефон: +{user_info[0]}\n"
                      f"Til: {user_info[1]}\n"
                      f"Манзил: {location}\n\n")
         total_amount = 0

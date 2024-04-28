@@ -94,7 +94,7 @@ def categories_uz(cats):
     kb = InlineKeyboardMarkup(row_width=2)
     back = InlineKeyboardButton(text="🔙Орқага", callback_data="main_menu_uz")
 
-    all_cats = [InlineKeyboardButton(text=i[1], callback_data=i[2]) for i in cats]
+    all_cats = [InlineKeyboardButton(text=i[1], callback_data=i[1]) for i in cats]
     kb.add(*all_cats, back)
     return kb
 
