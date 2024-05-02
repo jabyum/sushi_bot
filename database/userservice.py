@@ -19,7 +19,7 @@ def get_all_users_id():
     db = next(get_db())
     all_ids = db.query(User).all()
     if all_ids:
-        return [i.user_id for i in all_ids]
+        return [i.tg_id for i in all_ids]
     return []
 
 def check_language_db(user_id):

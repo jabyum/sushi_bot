@@ -10,7 +10,7 @@ from database import Base, engine
 import time
 import threading
 
-bot = TeleBot("")
+bot = TeleBot("7030688867:AAHTp74pQhErZWElrRKFmcucOOgsC4tx1hg")
 Base.metadata.create_all(bind=engine)
 carts = {}
 admins_group = -4111231307
@@ -882,16 +882,16 @@ def admins_answer_uz(message, type, m_id=None):
     except:
         bot.send_message(admins_group, "Ошибка", reply_markup=ReplyKeyboardRemove())
 def send_message_to_user(target_id, text, photo):
-    target = target_id[0]
+    target = target_id
     if photo == None:
         try:
-            time.sleep(0.2)
+            time.sleep(0.1)
             bot.send_message(target, text)
         except:
             pass
     else:
         try:
-            time.sleep(0.2)
+            time.sleep(0.1)
             bot.send_photo(target_id, photo=photo, caption=text)
         except:
             pass
