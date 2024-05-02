@@ -151,8 +151,9 @@ def admin_panel_kb():
     admins = InlineKeyboardButton(text="Админы", callback_data="admins")
     base = InlineKeyboardButton(text="База данных", callback_data="get_base")
     menu = InlineKeyboardButton(text='Действия с продуктами', callback_data="admin_product")
+    mailing = InlineKeyboardButton(text="Создать рассылку", callback_data="mailing")
     close = InlineKeyboardButton(text="Закрыть", callback_data="close")
-    kb.add(admins, base, menu,close)
+    kb.add(admins, base, menu, mailing, close)
     return kb
 def admins_kb():
     kb = InlineKeyboardMarkup(row_width=1)
@@ -238,4 +239,8 @@ def admin_accept_kb_uz():
     kb.add(ok, no, send_message)
     return kb
 
-
+def for_mailing():
+    kb = InlineKeyboardMarkup(row_width=1)
+    but = InlineKeyboardButton(text="Начать заказ / Буюртма бошлаш", callback_data="to_mm")
+    kb.add(but)
+    return kb

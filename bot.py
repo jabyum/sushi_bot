@@ -7,6 +7,8 @@ from database import userservice as us
 from telebot.types import ReplyKeyboardRemove
 import buttons as bt
 from database import Base, engine
+import time
+import threading
 
 bot = TeleBot("7030688867:AAHTp74pQhErZWElrRKFmcucOOgsC4tx1hg")
 Base.metadata.create_all(bind=engine)
@@ -91,13 +93,19 @@ def get_phone_uz(message, name):
                                                        "change_desc", "change_cat", "change_photo",
                                                        "change_price", "change_ru_name", "change_uz_name",
                                                        "change_ru_desc", "change_uz_desc", "send_prove",
-                                                       'accept_order', "cancel_order", "send_message"])
+                                                       'accept_order', "cancel_order", "send_message", 'mailing',
+                                                       "to_mm"])
 def for_call(call):
     user_id = call.message.chat.id
     if call.data == "back":
         bot.delete_message(user_id, call.message.message_id)
         cats = pr.get_cats()
         bot.send_message(user_id, "Выберите действие", reply_markup=bt.categories_ru(cats))
+    elif call.data == "mailing":
+        bot.delete_message(user_id, call.message.message_id)
+        bot.send_message(user_id, "Введите текст рассылки или отправьте фотографию с описанием, либо отмените рассылку через кнопку в меню",
+                         reply_markup=bt.cancel_kb())
+        bot.register_next_step_handler(call.message, mailing_to_all)
     elif call.data == "ru_lang":
         bot.send_message(user_id, "Введите своё имя")
         bot.register_next_step_handler(call.message, get_name)
@@ -280,6 +288,20 @@ def for_call(call):
     elif call.data == "send_message":
         bot.send_message(user_id, "Введи айди пользователя", reply_markup=bt.cancel_kb())
         bot.register_next_step_handler(call.message, admins_get_text_ru)
+    elif call.data == "to_mm":
+        checker = us.check_user_db(user_id=user_id)
+        if checker == True:
+            language = us.check_language_db(user_id)
+            if language == "ru":
+                cats = pr.get_cats()
+                bot.send_message(user_id, "Выберите действие", reply_markup=bt.categories_ru(cats))
+
+            elif language == "uz":
+                cats = pr.get_cats_uz()
+                bot.send_message(user_id, "Ҳаракатни танланг", reply_markup=bt.categories_uz(cats))
+        elif checker == False:
+            bot.send_message(user_id, "Добро пожаловать! Выберите язык \n\n"
+                                      "Хуш келибсиз! Тилни танланг", reply_markup=bt.choose_language_kb())
 
 
 
@@ -859,7 +881,40 @@ def admins_answer_uz(message, type, m_id=None):
                              parse_mode="HTML", reply_markup=ReplyKeyboardRemove())
     except:
         bot.send_message(admins_group, "Ошибка", reply_markup=ReplyKeyboardRemove())
+def send_message_to_user(target_id, text, photo):
+    target = target_id[0]
+    if photo == None:
+        try:
+            time.sleep(0.2)
+            bot.send_message(target, text)
+        except:
+            pass
+    else:
+        try:
+            time.sleep(0.2)
+            bot.send_photo(target_id, photo=photo, caption=text)
+        except:
+            pass
 
+
+def mailing_to_all(message):
+    user_id = message.from_user.id
+    targets_id = us.get_all_users_id()
+    if message.text == "Отмена❌":
+        bot.send_message(user_id, "Рассылка отменена", reply_markup=ReplyKeyboardRemove())
+    elif message.photo:
+        photo = message.photo[-1].file_id
+        text = message.caption
+        for target_id in targets_id:
+            thread = threading.Thread(target=send_message_to_user, args=(target_id, text, photo))
+            thread.start()
+    else:
+        for target_id in targets_id:
+            text = message.text
+            photo = None
+            thread = threading.Thread(target=send_message_to_user, args=(target_id, text, photo))
+            thread.start()
+    bot.send_message(user_id, "Рассылка завершена", reply_markup=ReplyKeyboardRemove())
 
 
 

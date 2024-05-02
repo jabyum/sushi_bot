@@ -15,6 +15,13 @@ def check_user_db(user_id):
     if checker:
         return True
     return False
+def get_all_users_id():
+    db = next(get_db())
+    all_ids = db.query(User).all()
+    if all_ids:
+        return [i.user_id for i in all_ids]
+    return []
+
 def check_language_db(user_id):
     db = next(get_db())
     checker = db.query(User).filter_by(tg_id=user_id).first()
