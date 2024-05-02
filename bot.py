@@ -10,7 +10,7 @@ from database import Base, engine
 import time
 import threading
 
-bot = TeleBot("7030688867:AAHTp74pQhErZWElrRKFmcucOOgsC4tx1hg")
+bot = TeleBot("")
 Base.metadata.create_all(bind=engine)
 carts = {}
 admins_group = -4111231307
