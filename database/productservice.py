@@ -124,7 +124,8 @@ def get_products_by_cat(cat):
 def get_products_by_cat_uz(cat):
     db = next(get_db())
     try:
-        products = db.query(Product).filter_by(product_cat=cat).all()
+        cat_uz = db.query(Category).filter_by(cat_name_uz=cat).first()
+        products = db.query(Product).filter_by(product_cat=cat_uz.cat_name).all()
         all_products = [product.product_name_uz for product in products]
         return all_products
     except:

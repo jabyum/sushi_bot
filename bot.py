@@ -10,23 +10,24 @@ from database import Base, engine
 import time
 import threading
 
-bot = TeleBot("")
+bot = TeleBot("7030688867:AAHTp74pQhErZWElrRKFmcucOOgsC4tx1hg")
 Base.metadata.create_all(bind=engine)
 carts = {}
 admins_group = -4111231307
-us.register_admin(305896408, "Programmer")
-pr.register_category("🍱Сеты", "🍱Setlar")
-pr.register_category("🍣Суши", "🍣Sushi")
-pr.register_category("🍤Роллы", "🍤Rollar")
-pr.register_category("🥬Салаты", "🥬Салатлар")
-pr.register_category("🥡ВОК", "🥡WOK")
-pr.register_category("🍜Супы", "🍜Шорбалар")
-pr.register_category("🥟Горячие закуски", "🥟 Иситиқ истифода")
-pr.register_category("🍞Хлеб", "🍞Нон")
-pr.register_category("🍰Десерты", "🍰Десертлар")
-pr.register_category("🍹Напитки", "🍹Ичимликлар")
-pr.register_category("🍹Напитки", "🍹Ичимликлар")
-pr.register_category("❇️Дополнительно", "❇️Қўшимча")
+# us.register_admin(305896408, "Programmer")
+# us.register_admin(305896408, "Programmer")
+# pr.register_category("🍱Сеты", "🍱Setlar")
+# pr.register_category("🍣Суши", "🍣Sushi")
+# pr.register_category("🍤Роллы", "🍤Rollar")
+# pr.register_category("🥬Салаты", "🥬Салатлар")
+# pr.register_category("🥡ВОК", "🥡WOK")
+# pr.register_category("🍜Супы", "🍜Шорбалар")
+# pr.register_category("🥟Горячие закуски", "🥟 Иситиқ истифода")
+# pr.register_category("🍞Хлеб", "🍞Нон")
+# pr.register_category("🍰Десерты", "🍰Десертлар")
+# pr.register_category("🍹Напитки", "🍹Ичимликлар")
+# pr.register_category("🍹Напитки", "🍹Ичимликлар")
+# pr.register_category("❇️Дополнительно", "❇️Қўшимча")
 @bot.message_handler(commands=["start", "admin"])
 def start(message):
     user_id = message.from_user.id
@@ -117,9 +118,9 @@ def for_call(call):
         full_text = f"Ваша корзина \n\n"
         total_amount = 0
         for i in user_cart:
-            full_text += f"{i[0]} x{i[1]} = {i[2]}\n"
+            full_text += f"{i[0]} x{i[1]} = {i[2]:,.0f}\n"
             total_amount += i[2]
-        full_text += f"\n\nИтоговая сумма {total_amount}"
+        full_text += f"\n\nИтоговая сумма {total_amount:,.0f} сум"
         cart = pr.get_user_cart_id_name(user_id)
         pr_name = []
         for i in cart:
@@ -330,7 +331,7 @@ def for_call_uz(call):
         for i in user_cart:
             full_text += f"{i[0]} x{i[1]} = {i[2]}\n"
             total_amount += i[2]
-        full_text += f"\n\nУмумий сумма: {total_amount}"
+        full_text += f"\n\nУмумий сумма: {total_amount:,.0f} сўм"
         cart = pr.get_user_cart_id_name(user_id)
         pr_name = []
         for i in cart:
@@ -422,9 +423,10 @@ def call_products(call):
         carts[user_id] = {}
         carts[user_id] = {"pr_name": product[0], "pr_count": 1, "pr_price": product[1]}
         bot.send_photo(user_id, photo=product[3], caption=f"{product[0]}\n"
-                                                          f"Описание: {product[2]}\n"
-                                                          f"Цена: {product[1]}\n"
-                                                          f"Выбрите количество: ", reply_markup=bt.exact_product_ru())
+                                                          f"<b>Описание</b>: {product[2]}\n"
+                                                          f"<b>Цена</b>: {product[1]:,.0f} сум\n"
+                                                          f"Выбрите количество: ", reply_markup=bt.exact_product_ru(),
+                       parse_mode="HTML")
     except:
         pass
 @bot.callback_query_handler(lambda call: call.data in pr.get_all_products_name_uz())
@@ -436,9 +438,10 @@ def call_products_uz(call):
     carts[user_id] = {"pr_name": product[0], "pr_count": 1, "pr_price": product[1]}
 
     bot.send_photo(user_id, photo=product[3], caption=f"{product[0]}\n"
-                                                      f"Тавсиф: {product[2]}\n"
-                                                      f"Нарх: {product[1]}\n"
-                                                      f"Микдорни танланг: ", reply_markup=bt.exact_product_uz())
+                                                      f"<b>Тавсиф</b>: {product[2]}\n"
+                                                      f"<b>Нарх</b>: {product[1]:,.0f} сўм\n"
+                                                      f"Микдорни танланг: ", reply_markup=bt.exact_product_uz(),
+                   parse_mode="HTML")
 
 
 try:
@@ -452,9 +455,9 @@ try:
             full_text = f"Ваша корзина \n\n"
             total_amount = 0
             for i in user_cart:
-                full_text += f"{i[0]} x{i[1]} = {i[2]}\n"
+                full_text += f"{i[0]} x{i[1]} = {i[2]:,.0f}\n"
                 total_amount += i[2]
-            full_text += f"\n\nИтоговая сумма {total_amount}"
+            full_text += f"\n\nИтоговая сумма {total_amount:,.0f} сум"
             cart = pr.get_user_cart_id_name(user_id)
             bot.edit_message_text(chat_id=user_id, message_id=call.message.id, text=full_text,
                                   reply_markup=bt.get_cart_kb_ru(cart))
@@ -464,9 +467,9 @@ try:
             full_text = f"Саватингиз \n\n"
             total_amount = 0
             for i in user_cart:
-                full_text += f"{i[0]} x{i[1]} = {i[2]}\n"
+                full_text += f"{i[0]} x{i[1]} = {i[2]:,.0f}\n"
                 total_amount += i[2]
-            full_text += f"\n\nУмумий сумма {total_amount}"
+            full_text += f"\n\nУмумий сумма {total_amount:,.0f} сўм"
             cart = pr.get_user_cart_id_name(user_id)
             bot.edit_message_text(chat_id=user_id, message_id=call.message.id, text=full_text,
                                   reply_markup=bt.get_cart_kb_uz(cart))
@@ -489,9 +492,9 @@ def mm(message):
             full_text = f"Ваша корзина \n\n"
             total_amount = 0
             for i in user_cart:
-                full_text += f"{i[0]} x{i[1]} = {i[2]}\n"
+                full_text += f"{i[0]} x{i[1]} = {i[2]:,.0f}\n"
                 total_amount += i[2]
-            full_text += f"\n\nИтоговая сумма {total_amount}"
+            full_text += f"\n\nИтоговая сумма {total_amount:,.0f} сум"
             cart = pr.get_user_cart_id_name(user_id)
             bot.send_message(user_id, full_text, reply_markup=bt.get_cart_kb_ru(cart))
         elif text == "🇺🇿O'zbek tili":
@@ -511,9 +514,9 @@ def mm(message):
             full_text = f"Саватингиз \n\n"
             total_amount = 0
             for i in user_cart:
-                full_text += f"{i[0]} x{i[1]} = {i[2]}\n"
+                full_text += f"{i[0]} x{i[1]} = {i[2]:,.0f}\n"
                 total_amount += i[2]
-            full_text += f"\n\nУмумий сумма {total_amount}"
+            full_text += f"\n\nУмумий сумма {total_amount:,.0f} сўм"
             cart = pr.get_user_cart_id_name(user_id)
             bot.send_message(user_id, full_text, reply_markup=bt.get_cart_kb_uz(cart))
         elif text == "🇷🇺Русский язык":
@@ -533,17 +536,20 @@ def get_location(message):
         user_cart = pr.get_user_cart(user_id)
         user_info = us.get_user_info(user_id)
         full_text = (f"Новый заказ от юзера <code>{user_id}</code>: \n"
-                     f"Номер: +{user_info[0]}\n"
-                     f"Язык: {user_info[1]}\n"
-                     f"Адрес: {location}\n\n")
+                     f"<b>Номер</b>: +{user_info[0]}\n"
+                     f"<b>Язык</b>: {user_info[1]}\n"
+                     f"<b>Адрес</b>: {location}\n\n")
         total_amount = 0
         for i in user_cart:
             full_text += f"{i[0]} x{i[1]} = {i[2]}\n"
             total_amount += i[2]
         full_text += f"\n\nИтоговая сумма {total_amount}"
         bot.send_message(admins_group, full_text, parse_mode="HTML", reply_markup=bt.admin_accept_kb_ru())
-        bot.send_message(user_id, f"Ваш заказ оформлен. Отправьте {total_amount} "
-                                  f"на карту <code> 8600 4929 9818 5108 </code> и подтвердите платеж скриншотом",
+        bot.send_message(user_id, f"Ваш заказ оформлен. Отправьте {total_amount:,.0f} сум "
+                                  f"на карту:\n"
+                                  f"<b>UZCARD</b>: <code>8600 4929 9818 5108</code>\n"
+                                  f"<b>VISA</b>: <code>4278 3200 2178 0209</code>\n"
+                                  f"и подтвердите платеж скриншотом",
                          reply_markup=bt.send_prove_kb(), parse_mode="HTML")
         pr.delete_user_cart(user_id)
         bot.send_message(user_id, "Выберите действие", reply_markup=bt.main_menu_ru())
@@ -561,18 +567,21 @@ def get_location_uz(message):
         location = geolocators(latitude, longitude)
         user_cart = pr.get_user_cart(user_id)
         user_info = us.get_user_info(user_id)
-        full_text = (f"Фойдаланувчи <code>{user_id}</code>дан янги буюртма:\n"
-                     f"Телефон: +{user_info[0]}\n"
-                     f"Til: {user_info[1]}\n"
-                     f"Манзил: {location}\n\n")
+        full_text = (f"<b>Фойдаланувчи</b> <code>{user_id}</code>дан янги буюртма:\n"
+                     f"<b>Телефон</b>: +{user_info[0]}\n"
+                     f"<b>Til</b>: {user_info[1]}\n"
+                     f"<b>Манзил</b>: {location}\n\n")
         total_amount = 0
         for i in user_cart:
             full_text += f"{i[0]} x{i[1]} = {i[2]}\n"
             total_amount += i[2]
-        full_text += f"\n\nУмумий сумма {total_amount}"
+        full_text += f"\n\nУмумий сумма {total_amount:,.0f} сўм"
         bot.send_message(admins_group, full_text, parse_mode="HTML", reply_markup=bt.admin_accept_kb_ru())
-        bot.send_message(user_id, f"Буюртмангиз қабул қилинди. {total_amount} "
-                                  f"картага <code> 8600 4929 9818 5108 </code> улар ва тасдиқлов учун тасдиқланган расмини юборинг",
+        bot.send_message(user_id, f"Сизнинг буюртмангиз қабул қилинди. {total_amount:,.0f} сўм"
+                                  f"картага юборинг:\n"
+                                  f"<b>UZCARD</b>: <code>8600 4929 9818 5108</code>\n"
+                                  f"<b>VISA<b>: <code>4278 3200 2178 0209</code>\n"
+                                  f"ва тасдиқлов учун расм юборинг",
                          reply_markup=bt.send_prove_kb(), parse_mode="HTML")
         pr.delete_user_cart(user_id)
         bot.send_message(user_id, "Ҳаракатни танланг", reply_markup=bt.main_menu_uz())
@@ -886,13 +895,13 @@ def send_message_to_user(target_id, text, photo):
     if photo == None:
         try:
             time.sleep(0.1)
-            bot.send_message(target, text)
+            bot.send_message(target, text, reply_markup=bt.for_mailing())
         except:
             pass
     else:
         try:
             time.sleep(0.1)
-            bot.send_photo(target_id, photo=photo, caption=text)
+            bot.send_photo(target_id, photo=photo, caption=text, reply_markup=bt.for_mailing())
         except:
             pass
 
