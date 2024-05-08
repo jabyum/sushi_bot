@@ -10,7 +10,7 @@ from database import Base, engine
 import time
 import threading
 
-bot = TeleBot("")
+bot = TeleBot("7030688867:AAHTp74pQhErZWElrRKFmcucOOgsC4tx1hg")
 Base.metadata.create_all(bind=engine)
 carts = {}
 admins_group = -4111231307
@@ -577,10 +577,10 @@ def get_location_uz(message):
             total_amount += i[2]
         full_text += f"\n\nУмумий сумма {total_amount:,.0f} сўм"
         bot.send_message(admins_group, full_text, parse_mode="HTML", reply_markup=bt.admin_accept_kb_ru())
-        bot.send_message(user_id, f"Сизнинг буюртмангиз қабул қилинди. {total_amount:,.0f} сўм"
+        bot.send_message(user_id, f"Сизнинг буюртмангиз қабул қилинди. {total_amount:,.0f} сўм "
                                   f"картага юборинг:\n"
                                   f"<b>UZCARD</b>: <code>8600 4929 9818 5108</code>\n"
-                                  f"<b>VISA<b>: <code>4278 3200 2178 0209</code>\n"
+                                  f"<b>VISA</b>: <code>4278 3200 2178 0209</code>\n"
                                   f"ва тасдиқлов учун расм юборинг",
                          reply_markup=bt.send_prove_kb(), parse_mode="HTML")
         pr.delete_user_cart(user_id)
