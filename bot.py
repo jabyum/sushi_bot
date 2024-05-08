@@ -10,7 +10,7 @@ from database import Base, engine
 import time
 import threading
 
-bot = TeleBot("")
+bot = TeleBot("7030688867:AAHTp74pQhErZWElrRKFmcucOOgsC4tx1hg")
 Base.metadata.create_all(bind=engine)
 carts = {}
 admins_group = -4111231307
@@ -538,7 +538,7 @@ def get_location(message):
         full_text = (f"Новый заказ от юзера <code>{user_id}</code>: \n"
                      f"<b>Номер</b>: +{user_info[0]}\n"
                      f"<b>Язык</b>: {user_info[1]}\n"
-                     f"<b>Адрес</b>: {location}\n\n")
+                     f"<b>Адрес</b>: <code>{location}</code>\n\n")
         total_amount = 0
         for i in user_cart:
             full_text += f"{i[0]} x{i[1]} = {i[2]}\n"
@@ -570,7 +570,7 @@ def get_location_uz(message):
         full_text = (f"<b>Фойдаланувчи</b> <code>{user_id}</code>дан янги буюртма:\n"
                      f"<b>Телефон</b>: +{user_info[0]}\n"
                      f"<b>Til</b>: {user_info[1]}\n"
-                     f"<b>Манзил</b>: {location}\n\n")
+                     f"<b>Манзил</b>: <code>{location}</code>\n\n")
         total_amount = 0
         for i in user_cart:
             full_text += f"{i[0]} x{i[1]} = {i[2]}\n"
