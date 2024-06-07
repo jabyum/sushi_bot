@@ -81,14 +81,18 @@ def exact_product_ru(current_ammount=1, plus_or_minus=""):
     kb.row(accept)
     kb.row(back)
     return kb
-def get_cart_kb_ru(cart):
+def get_cart_kb_ru(cart, status):
     kb = InlineKeyboardMarkup(row_width=1)
-    clear = InlineKeyboardButton(text="Очистить корзину", callback_data="clear_cart")
-    back = InlineKeyboardButton(text="⬅️ Назад", callback_data="main_menu")
-    order = InlineKeyboardButton(text="Оформить заказ", callback_data="order")
-    products = [InlineKeyboardButton(text=f"❌ {i[0]}", callback_data=f"{int(i[1])}") for i in cart]
-    kb.add(clear,back,order)
-    kb.add(*products)
+    if status == 1:
+        clear = InlineKeyboardButton(text="Очистить корзину", callback_data="clear_cart")
+        back = InlineKeyboardButton(text="⬅️ Назад", callback_data="main_menu")
+        order = InlineKeyboardButton(text="Оформить заказ", callback_data="order")
+        products = [InlineKeyboardButton(text=f"❌ {i[0]}", callback_data=f"{int(i[1])}") for i in cart]
+        kb.add(clear,back,order)
+        kb.add(*products)
+    elif status == 0:
+        back = InlineKeyboardButton(text="⬅️ Назад", callback_data="main_menu")
+        kb.add(back)
     return kb
 def categories_uz(cats):
     kb = InlineKeyboardMarkup(row_width=2)
@@ -124,14 +128,18 @@ def exact_product_uz(current_ammount=1, plus_or_minus=""):
     kb.row(back)
     return kb
 
-def get_cart_kb_uz(cart):
+def get_cart_kb_uz(cart, status):
     kb = InlineKeyboardMarkup(row_width=1)
-    clear = InlineKeyboardButton(text="Саватни тозалаш", callback_data="clear_cart_uz")
-    back = InlineKeyboardButton(text="⬅️ Орқага", callback_data="main_menu_uz")
-    order = InlineKeyboardButton(text="Буюртма бериш", callback_data="order_uz")
-    products = [InlineKeyboardButton(text=f"❌ {i[0]}", callback_data=f"{int(i[1])}") for i in cart]
-    kb.add(clear,back,order)
-    kb.add(*products)
+    if status == 1:
+        clear = InlineKeyboardButton(text="Саватни тозалаш", callback_data="clear_cart_uz")
+        back = InlineKeyboardButton(text="⬅️ Орқага", callback_data="main_menu_uz")
+        order = InlineKeyboardButton(text="Буюртма бериш", callback_data="order_uz")
+        products = [InlineKeyboardButton(text=f"❌ {i[0]}", callback_data=f"{int(i[1])}") for i in cart]
+        kb.add(clear,back,order)
+        kb.add(*products)
+    elif status == 0:
+        back = InlineKeyboardButton(text="⬅️ Орқага", callback_data="main_menu_uz")
+        kb.add(back)
     return kb
 
 def accept_kb_uz():

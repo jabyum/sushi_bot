@@ -9,8 +9,7 @@ import buttons as bt
 from database import Base, engine
 import time
 import threading
-
-bot = TeleBot("")
+bot = TeleBot("7030688867:AAHTp74pQhErZWElrRKFmcucOOgsC4tx1hg")
 Base.metadata.create_all(bind=engine)
 carts = {}
 admins_group = -4111231307
@@ -122,10 +121,13 @@ def for_call(call):
             total_amount += i[2]
         full_text += f"\n\nИтоговая сумма {total_amount:,.0f} сум"
         cart = pr.get_user_cart_id_name(user_id)
+        status = 1
+        if cart == []:
+            status = 0
         pr_name = []
         for i in cart:
             pr_name.append(i[0])
-        bot.send_message(user_id, full_text, reply_markup=bt.get_cart_kb_ru(cart))
+        bot.send_message(user_id, full_text, reply_markup=bt.get_cart_kb_ru(cart, status))
     elif call.data == "plus":
         current_ammount = carts[user_id]["pr_count"]
         carts[user_id]["pr_count"] += 1
@@ -326,6 +328,9 @@ def for_call_uz(call):
     elif call.data == "user_cart_uz":
         bot.delete_message(user_id, call.message.message_id)
         user_cart = pr.get_user_cart(user_id)
+        status = 1
+        if user_cart == []:
+            status = 0
         full_text = f"Саватингиз \n\n"
         total_amount = 0
         for i in user_cart:
@@ -336,7 +341,7 @@ def for_call_uz(call):
         pr_name = []
         for i in cart:
             pr_name.append(i[0])
-        bot.send_message(user_id, full_text, reply_markup=bt.get_cart_kb_uz(cart))
+        bot.send_message(user_id, full_text, reply_markup=bt.get_cart_kb_uz(cart, status))
     elif call.data == "plus_uz":
         current_ammount = carts[user_id]["pr_count"]
         carts[user_id]["pr_count"] += 1
@@ -459,11 +464,17 @@ try:
                 total_amount += i[2]
             full_text += f"\n\nИтоговая сумма {total_amount:,.0f} сум"
             cart = pr.get_user_cart_id_name(user_id)
+            status = 1
+            if cart == []:
+                status = 0
             bot.edit_message_text(chat_id=user_id, message_id=call.message.id, text=full_text,
-                                  reply_markup=bt.get_cart_kb_ru(cart))
+                                  reply_markup=bt.get_cart_kb_ru(cart, status))
         elif language == "uz":
             pr.delete_exact_product_from_cart(call.data)
             user_cart = pr.get_user_cart(user_id)
+            status = 1
+            if user_cart == []:
+                status = 0
             full_text = f"Саватингиз \n\n"
             total_amount = 0
             for i in user_cart:
@@ -472,7 +483,7 @@ try:
             full_text += f"\n\nУмумий сумма {total_amount:,.0f} сўм"
             cart = pr.get_user_cart_id_name(user_id)
             bot.edit_message_text(chat_id=user_id, message_id=call.message.id, text=full_text,
-                                  reply_markup=bt.get_cart_kb_uz(cart))
+                                  reply_markup=bt.get_cart_kb_uz(cart, status))
 except:
     pass
 @bot.message_handler(content_types=["text"])
@@ -488,15 +499,18 @@ def mm(message):
             bot.send_message(user_id, "Напишите свой отзыв", reply_markup=ReplyKeyboardRemove())
             bot.register_next_step_handler(message, feedback)
         elif text == "🛒Корзина":
+            status = 1
             user_cart = pr.get_user_cart(user_id)
             full_text = f"Ваша корзина \n\n"
+            if user_cart == []:
+                status = 0
             total_amount = 0
             for i in user_cart:
                 full_text += f"{i[0]} x{i[1]} = {i[2]:,.0f}\n"
                 total_amount += i[2]
             full_text += f"\n\nИтоговая сумма {total_amount:,.0f} сум"
             cart = pr.get_user_cart_id_name(user_id)
-            bot.send_message(user_id, full_text, reply_markup=bt.get_cart_kb_ru(cart))
+            bot.send_message(user_id, full_text, reply_markup=bt.get_cart_kb_ru(cart, status))
         elif text == "🇺🇿O'zbek tili":
             us.change_language(user_id=user_id, new_language="uz")
             bot.send_message(user_id, "Ҳаракатни танланг", reply_markup=bt.main_menu_uz())
@@ -510,7 +524,10 @@ def mm(message):
             bot.send_message(user_id, "Фикрингизни ёзинг", reply_markup=ReplyKeyboardRemove())
             bot.register_next_step_handler(message, feedback_uz)
         elif text == "🛒Сават":
+            status = 1
             user_cart = pr.get_user_cart(user_id)
+            if user_cart == []:
+                status = 0
             full_text = f"Саватингиз \n\n"
             total_amount = 0
             for i in user_cart:
@@ -518,7 +535,7 @@ def mm(message):
                 total_amount += i[2]
             full_text += f"\n\nУмумий сумма {total_amount:,.0f} сўм"
             cart = pr.get_user_cart_id_name(user_id)
-            bot.send_message(user_id, full_text, reply_markup=bt.get_cart_kb_uz(cart))
+            bot.send_message(user_id, full_text, reply_markup=bt.get_cart_kb_uz(cart, status))
         elif text == "🇷🇺Русский язык":
             us.change_language(user_id=user_id, new_language="ru")
             bot.send_message(user_id, "Выберите действие", reply_markup=bt.main_menu_ru())
@@ -921,6 +938,7 @@ def mailing_to_all(message):
         for target_id in targets_id:
             text = message.text
             photo = None
+
             thread = threading.Thread(target=send_message_to_user, args=(target_id, text, photo))
             thread.start()
     bot.send_message(user_id, "Рассылка завершена", reply_markup=ReplyKeyboardRemove())
