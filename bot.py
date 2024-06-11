@@ -9,7 +9,7 @@ import buttons as bt
 from database import Base, engine
 import time
 import threading
-bot = TeleBot("")
+bot = TeleBot("7030688867:AAHTp74pQhErZWElrRKFmcucOOgsC4tx1hg")
 Base.metadata.create_all(bind=engine)
 carts = {}
 admins_group = -4111231307
@@ -926,7 +926,7 @@ def send_message_to_user(target_id, text, photo):
 def mailing_to_all(message):
     user_id = message.from_user.id
     targets_id = us.get_all_users_id()
-    if message.text == "Отмена❌":
+    if message.text == "❌Отменить":
         bot.send_message(user_id, "Рассылка отменена", reply_markup=ReplyKeyboardRemove())
     elif message.photo:
         photo = message.photo[-1].file_id
