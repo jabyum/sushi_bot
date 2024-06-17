@@ -229,8 +229,15 @@ def admin_product_menu_kb():
     return kb
 def send_prove_kb():
     kb = InlineKeyboardMarkup(row_width=1)
-    prove = InlineKeyboardButton(text="Подтвердить оплату", callback_data="send_prove")
-    kb.add(prove)
+    prove = InlineKeyboardButton(text="Отправить скриншот", callback_data="send_prove")
+    cash = InlineKeyboardButton(text="Оплата наличкой", callback_data="cash")
+    kb.add(prove, cash)
+    return kb
+def send_prove_kb_uz():
+    kb = InlineKeyboardMarkup(row_width=1)
+    prove = InlineKeyboardButton(text="Скриншот юбориш", callback_data="send_prove_uz")
+    cash = InlineKeyboardButton(text="Нақд пул билан тўлаш", callback_data="cash_uz")
+    kb.add(prove, cash)
     return kb
 def admin_accept_kb_ru():
     kb = InlineKeyboardMarkup(row_width=1)

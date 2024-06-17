@@ -9,7 +9,7 @@ import buttons as bt
 from database import Base, engine
 import time
 import threading
-bot = TeleBot("")
+bot = TeleBot("7030688867:AAHTp74pQhErZWElrRKFmcucOOgsC4tx1hg")
 Base.metadata.create_all(bind=engine)
 carts = {}
 admins_group = -4111231307
@@ -94,7 +94,7 @@ def get_phone_uz(message, name):
                                                        "change_price", "change_ru_name", "change_uz_name",
                                                        "change_ru_desc", "change_uz_desc", "send_prove",
                                                        'accept_order', "cancel_order", "send_message", 'mailing',
-                                                       "to_mm"])
+                                                       "to_mm", "cash"])
 def for_call(call):
     user_id = call.message.chat.id
     if call.data == "back":
@@ -280,7 +280,7 @@ def for_call(call):
         bot.send_message(user_id, "Напишите айди изменяемого продукта", reply_markup=bt.cancel_kb())
         bot.register_next_step_handler(call.message, change_prod_uz_desc)
     elif call.data == "send_prove":
-        bot.send_message(user_id, "Отправьте скриншот/фото оплаты")
+        bot.send_message(user_id, "Отправьте скриншот/фото оплаты", reply_markup=bt.cancel_kb())
         bot.register_next_step_handler(call.message, send_screenshot)
     elif call.data == "accept_order":
         bot.send_message(user_id, "Введи айди пользователя для подтверждения заказа", reply_markup=bt.cancel_kb())
@@ -291,6 +291,10 @@ def for_call(call):
     elif call.data == "send_message":
         bot.send_message(user_id, "Введи айди пользователя", reply_markup=bt.cancel_kb())
         bot.register_next_step_handler(call.message, admins_get_text_ru)
+    elif call.data == "cash":
+        bot.send_message(chat_id=admins_group, text=f"Подтвреждение оплаты наличными от юзера <code> {user_id} </code>",
+                       parse_mode="HTML", reply_markup=bt.admin_accept_kb_ru())
+        bot.send_message(user_id, "Подтверждение отправлено. Ожидайте ответ")
     elif call.data == "to_mm":
         checker = us.check_user_db(user_id=user_id)
         if checker == True:
@@ -313,7 +317,7 @@ def for_call(call):
                                                        "none", "to_cart_uz", "clear_cart_uz", "main_menu_uz",
                                                        "order_uz", "close_uz", "yes_uz", "no_uz", "uz_lang",
                                                        "send_prove_uz", "cancel_order_uz", "accept_order_uz",
-                                                       "send_message_uz"])
+                                                       "send_message_uz", "cash_uz"])
 def for_call_uz(call):
     user_id = call.message.chat.id
     if call.data == "back_uz":
@@ -357,6 +361,10 @@ def for_call_uz(call):
             pass
     elif call.data == "none":
         pass
+    elif call.data == "cash_uz":
+        bot.send_message(chat_id=admins_group, text=f"Подтвреждение оплаты наличными от юзера <code> {user_id} </code>",
+                       parse_mode="HTML", reply_markup=bt.admin_accept_kb_uz())
+        bot.send_message(user_id, "Тасдиқлов юборилди. Жавоб кутишингизни сўраймиз")
     elif call.data == "to_cart_uz":
         pr.add_to_cart(user_id=user_id, product_name=carts.get(user_id).get("pr_name"),
                        product_count=carts.get(user_id).get("pr_count"),
@@ -599,7 +607,7 @@ def get_location_uz(message):
                                   f"<b>UZCARD</b>: <code>8600 4929 9818 5108</code>\n"
                                   f"<b>VISA</b>: <code>4278 3200 2178 0209</code>\n"
                                   f"ва тасдиқлов учун расм юборинг",
-                         reply_markup=bt.send_prove_kb(), parse_mode="HTML")
+                         reply_markup=bt.send_prove_kb_uz(), parse_mode="HTML")
         pr.delete_user_cart(user_id)
         bot.send_message(user_id, "Ҳаракатни танланг", reply_markup=bt.main_menu_uz())
     elif message.text == "❌Бекор қилиш":
