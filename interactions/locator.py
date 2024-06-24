@@ -1,5 +1,5 @@
 import requests
-api_key = ""
+api_key = "4836e292-87ca-48ee-a4f6-8d9f415ca680"
 def geolocators(latitude, longitude):
     url = f"https://geocode-maps.yandex.ru/1.x/?apikey={api_key}&geocode={longitude},{latitude}&format=json"
     response = requests.get(url)

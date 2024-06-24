@@ -1,9 +1,12 @@
 from database.models import Category, Product, Cart
-from database import get_db
 from datetime import datetime
+from sqlalchemy import create_engine
+from sqlalchemy.orm import Session
+
 
 def register_category(cat_name, cat_name_uz):
-    db = next(get_db())
+    engine = create_engine('sqlite:///data.db', echo=False, connect_args={'check_same_thread': False})
+    db = Session(bind=engine)
     try:
         new_cat = Category(cat_name=cat_name, cat_name_uz=cat_name_uz, reg_date=datetime.now())
         db.add(new_cat)
@@ -12,7 +15,8 @@ def register_category(cat_name, cat_name_uz):
     except:
         return "Категория уже существует"
 def change_cat_ru(cat_name, new_cat_name):
-    db = next(get_db())
+    engine = create_engine('sqlite:///data.db', echo=False, connect_args={'check_same_thread': False})
+    db = Session(bind=engine)
     try:
         exact_cat = db.query(Category).filter_by(cat_name).first()
         exact_cat.cat_name = new_cat_name
@@ -21,7 +25,8 @@ def change_cat_ru(cat_name, new_cat_name):
     except:
         return "Такой категории нет"
 def change_cat_uz(cat_name_uz, new_cat_name):
-    db = next(get_db())
+    engine = create_engine('sqlite:///data.db', echo=False, connect_args={'check_same_thread': False})
+    db = Session(bind=engine)
     try:
         exact_cat = db.query(Category).filter_by(cat_name_uz).first()
         exact_cat.cat_name_uz = new_cat_name
@@ -30,7 +35,8 @@ def change_cat_uz(cat_name_uz, new_cat_name):
     except:
         return "Такой категории нет"
 def delete_cat(cat_name):
-    db = next(get_db())
+    engine = create_engine('sqlite:///data.db', echo=False, connect_args={'check_same_thread': False})
+    db = Session(bind=engine)
     try:
         exact_cat = db.query(Category).filter_by(cat_name).first()
         db.delete(exact_cat)
@@ -40,7 +46,8 @@ def delete_cat(cat_name):
         return "Категория не найдена"
 def register_product(product_name, product_name_uz, product_price, product_description,
                      product_description_uz, product_photo, product_cat):
-    db = next(get_db())
+    engine = create_engine('sqlite:///data.db', echo=False, connect_args={'check_same_thread': False})
+    db = Session(bind=engine)
     try:
         new_product = Product(product_name=product_name, product_name_uz=product_name_uz, product_price=product_price,
                               product_description=product_description, product_description_uz=product_description_uz,
@@ -51,7 +58,8 @@ def register_product(product_name, product_name_uz, product_price, product_descr
     except:
         return "Продукт уже существует"
 def change_product_info(product_id, column, new_info):
-    db = next(get_db())
+    engine = create_engine('sqlite:///data.db', echo=False, connect_args={'check_same_thread': False})
+    db = Session(bind=engine)
     product = db.query(Product).filter_by(product_id=product_id).first()
     try:
         if column.lower() == "product_name":
@@ -73,7 +81,8 @@ def change_product_info(product_id, column, new_info):
     except:
         return "Не получилось изменить"
 def delete_product(product_name):
-    db = next(get_db())
+    engine = create_engine('sqlite:///data.db', echo=False, connect_args={'check_same_thread': False})
+    db = Session(bind=engine)
     try:
         product = db.query(Product).filter_by(product_name=product_name).first()
         db.delete(product)
@@ -82,7 +91,8 @@ def delete_product(product_name):
     except:
         return "Продукт не найден"
 def get_cats():
-    db = next(get_db())
+    engine = create_engine('sqlite:///data.db', echo=False, connect_args={'check_same_thread': False})
+    db = Session(bind=engine)
     try:
         cats = db.query(Category).all()
         all_cats = [(cat.cat_id, cat.cat_name) for cat in cats]
@@ -90,7 +100,8 @@ def get_cats():
     except:
         return []
 def get_cats_uz():
-    db = next(get_db())
+    engine = create_engine('sqlite:///data.db', echo=False, connect_args={'check_same_thread': False})
+    db = Session(bind=engine)
     try:
         cats = db.query(Category).all()
         all_cats = [(cat.cat_id, cat.cat_name_uz, cat.cat_name) for cat in cats]
@@ -98,7 +109,8 @@ def get_cats_uz():
     except:
         return []
 def get_all_cats_name():
-    db = next(get_db())
+    engine = create_engine('sqlite:///data.db', echo=False, connect_args={'check_same_thread': False})
+    db = Session(bind=engine)
     try:
         cats = db.query(Category).all()
         all_cats = [cat.cat_name for cat in cats]
@@ -106,7 +118,8 @@ def get_all_cats_name():
     except:
         return []
 def get_all_cats_name_uz():
-    db = next(get_db())
+    engine = create_engine('sqlite:///data.db', echo=False, connect_args={'check_same_thread': False})
+    db = Session(bind=engine)
     try:
         cats = db.query(Category).all()
         all_cats = [cat.cat_name_uz for cat in cats]
@@ -114,7 +127,8 @@ def get_all_cats_name_uz():
     except:
         return []
 def get_products_by_cat(cat):
-    db = next(get_db())
+    engine = create_engine('sqlite:///data.db', echo=False, connect_args={'check_same_thread': False})
+    db = Session(bind=engine)
     try:
         products = db.query(Product).filter_by(product_cat=cat).all()
         all_products = [product.product_name for product in products]
@@ -122,7 +136,8 @@ def get_products_by_cat(cat):
     except:
         return []
 def get_products_by_cat_uz(cat):
-    db = next(get_db())
+    engine = create_engine('sqlite:///data.db', echo=False, connect_args={'check_same_thread': False})
+    db = Session(bind=engine)
     try:
         cat_uz = db.query(Category).filter_by(cat_name_uz=cat).first()
         products = db.query(Product).filter_by(product_cat=cat_uz.cat_name).all()
@@ -131,7 +146,8 @@ def get_products_by_cat_uz(cat):
     except:
         return []
 def get_all_products_name():
-    db = next(get_db())
+    engine = create_engine('sqlite:///data.db', echo=False, connect_args={'check_same_thread': False})
+    db = Session(bind=engine)
     try:
         products = db.query(Product).all()
         all_products = [product.product_name for product in products]
@@ -139,7 +155,8 @@ def get_all_products_name():
     except:
         return []
 def get_all_products_name_uz():
-    db = next(get_db())
+    engine = create_engine('sqlite:///data.db', echo=False, connect_args={'check_same_thread': False})
+    db = Session(bind=engine)
     try:
         products = db.query(Product).all()
         all_products = [product.product_name_uz for product in products]
@@ -147,7 +164,8 @@ def get_all_products_name_uz():
     except:
         return []
 def get_product(product_name):
-    db = next(get_db())
+    engine = create_engine('sqlite:///data.db', echo=False, connect_args={'check_same_thread': False})
+    db = Session(bind=engine)
     try:
         product = db.query(Product).filter_by(product_name=product_name).first()
         return [product.product_name, product.product_price,
@@ -155,7 +173,8 @@ def get_product(product_name):
     except:
         return []
 def get_product_uz(product_name_uz):
-    db = next(get_db())
+    engine = create_engine('sqlite:///data.db', echo=False, connect_args={'check_same_thread': False})
+    db = Session(bind=engine)
     try:
         product = db.query(Product).filter_by(product_name_uz=product_name_uz).first()
         return [product.product_name_uz, product.product_price,
@@ -163,7 +182,8 @@ def get_product_uz(product_name_uz):
     except:
         return []
 def get_user_cart(user_id):
-    db = next(get_db())
+    engine = create_engine('sqlite:///data.db', echo=False, connect_args={'check_same_thread': False})
+    db = Session(bind=engine)
     try:
         cart = db.query(Cart).filter_by(user_id=user_id).all()
         user_cart = [(exact.product_name, exact.product_count, exact.total_price) for exact in cart]
@@ -171,7 +191,8 @@ def get_user_cart(user_id):
     except:
         return []
 def get_user_cart_id_name(user_id):
-    db = next(get_db())
+    engine = create_engine('sqlite:///data.db', echo=False, connect_args={'check_same_thread': False})
+    db = Session(bind=engine)
     try:
         cart = db.query(Cart).filter_by(user_id=user_id).all()
         user_cart = [(exact.product_name, exact.cart_id) for exact in cart]
@@ -179,7 +200,8 @@ def get_user_cart_id_name(user_id):
     except:
         return []
 def add_to_cart(user_id, product_name, product_count, product_price):
-    db = next(get_db())
+    engine = create_engine('sqlite:///data.db', echo=False, connect_args={'check_same_thread': False})
+    db = Session(bind=engine)
     try:
         total_price = product_count * product_price
         new_cart = Cart(user_id=user_id, product_name=product_name,
@@ -190,7 +212,8 @@ def add_to_cart(user_id, product_name, product_count, product_price):
         pass
 
 def delete_user_cart(user_id):
-    db = next(get_db())
+    engine = create_engine('sqlite:///data.db', echo=False, connect_args={'check_same_thread': False})
+    db = Session(bind=engine)
     exact_cat = db.query(Cart).filter_by(user_id=user_id).all()
     try:
         for items in exact_cat:
@@ -199,7 +222,8 @@ def delete_user_cart(user_id):
     except:
         pass
 def user_cart_ids(user_id):
-    db = next(get_db())
+    engine = create_engine('sqlite:///data.db', echo=False, connect_args={'check_same_thread': False})
+    db = Session(bind=engine)
     exact_carts = db.query(Cart).filter_by(user_id=user_id).all()
     try:
         actual_ids = [str(exact.cart_id) for exact in exact_carts]
@@ -208,7 +232,8 @@ def user_cart_ids(user_id):
         pass
 
 def delete_exact_product_from_cart(cart_id):
-    db = next(get_db())
+    engine = create_engine('sqlite:///data.db', echo=False, connect_args={'check_same_thread': False})
+    db = Session(bind=engine)
     try:
         product = db.query(Cart).filter_by(cart_id=cart_id).first()
         db.delete(product)
