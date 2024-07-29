@@ -9,7 +9,7 @@ import buttons as bt
 from database import Base, engine
 import time
 import threading
-bot = TeleBot("token")
+bot = TeleBot("7030688867:AAHTp74pQhErZWElrRKFmcucOOgsC4tx1hg")
 Base.metadata.create_all(bind=engine)
 carts = {}
 admins_group = -4111231307
@@ -27,6 +27,7 @@ admins_group = -4111231307
 # pr.register_category("🍹Напитки", "🍹Ичимликлар")
 # pr.register_category("🍹Напитки", "🍹Ичимликлар")
 # pr.register_category("❇️Дополнительно", "❇️Қўшимча")
+# pr.register_category("⭐️Акции", "⭐️Акциялар")
 @bot.message_handler(commands=["start", "admin"])
 def start(message):
     user_id = message.from_user.id
